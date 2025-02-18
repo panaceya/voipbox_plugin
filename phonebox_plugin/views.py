@@ -15,12 +15,12 @@ class NumberListView(generic.ObjectListView):
     filterset = filters.NumberFilterSet
     filterset_form = forms.NumberFilterForm
     table = tables.NumberTable
-    template_name = "phonebox_plugin/number_list_view_4.x.html"
+    template_name = "phonebox_plugin/number_list_view.html"
     
 
 class NumberView(generic.ObjectView):
     queryset = Number.objects.prefetch_related('tenant')
-    template_name = "phonebox_plugin/number_3.x.html"
+    template_name = "phonebox_plugin/number.html"
     
 class NumberEditView(generic.ObjectEditView):
     queryset = Number.objects.all()
