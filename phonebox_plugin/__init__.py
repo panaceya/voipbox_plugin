@@ -1,13 +1,11 @@
-from packaging import version
-from django.conf import settings
-
+import importlib.metadata
 from netbox.plugins import PluginConfig
 
 class PhoneBoxConfig(PluginConfig):
     name = 'phonebox_plugin'
+    version = version = importlib.metadata.version('phonebox_plugin')
     verbose_name = 'PhoneBox Plugin'
     description = 'Telephone Number Management Plugin for NetBox.'
-    version = 'v0.0.11'
     author = 'Igor Korotchenkov'
     author_email = 'iDebugAll@gmail.com'
     base_url = 'phonebox'
