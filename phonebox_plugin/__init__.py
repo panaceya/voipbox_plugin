@@ -3,7 +3,7 @@ from netbox.plugins import PluginConfig
 
 class PhoneBoxConfig(PluginConfig):
     name = 'phonebox_plugin'
-    version = version = importlib.metadata.version('phonebox_plugin')
+    version = version = importlib.metadata.version('phonebox-plugin')
     verbose_name = 'PhoneBox Plugin'
     description = 'Telephone Number Management Plugin for NetBox.'
     author = 'Igor Korotchenkov'
