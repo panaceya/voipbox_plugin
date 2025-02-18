@@ -66,14 +66,16 @@ class Number(ChangeLoggedModel):
 
     csv_headers = ['number', 'tenant', 'region', 'description', 'provider', 'forward_to']
 
+    class Meta:
+        unique_together = ("number", "tenant",)
+        
     def __str__(self):
         return str(self.number)
 
     def get_absolute_url(self):
         return reverse("plugins:phonebox_plugin:number_view", kwargs={"pk": self.pk})
 
-    class Meta:
-        unique_together = ("number", "tenant",)
+
 
 
 class VoiceCircuit(ChangeLoggedModel):

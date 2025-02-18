@@ -24,7 +24,7 @@ class NumberSerializer(TagSerializer, serializers.ModelSerializer):
     class Meta:
         model = Number
         fields = [
-            "id", "label", "number", "tenant", "region", "forward_to", "description", "provider", "tags",
+            "id", "display", "label", "number", "tenant", "region", "forward_to", "description", "provider", "tags",
         ]
 
 
@@ -54,7 +54,7 @@ class VoiceCircuitSerializer(TagSerializer, serializers.ModelSerializer):
     class Meta:
         model = VoiceCircuit
         fields = [
-            "id", "label", "name", "voice_circuit_type", "tenant", "region", "site", "description",
+            "id", "label", "display", "name", "voice_circuit_type", "tenant", "region", "site", "description",
             'assigned_object_type','assigned_object_id', 'assigned_object',
             "sip_source", "sip_target", "provider", "tags",
         ]
