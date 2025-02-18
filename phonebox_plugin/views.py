@@ -57,7 +57,7 @@ class VoiceCircuitListView(generic.ObjectListView):
     filterset = filters.VoiceCircuitFilterSet
     filterset_form = forms.VoiceCircuitFilterForm
     table = tables.VoiceCircuitTable
-    template_name = "phonebox_plugin/voice_circuit_list_view_4.x.html"
+    #template_name = "phonebox_plugin/voice_circuit_list_view_4.x.html"
     
 
 class VoiceCircuitView(generic.ObjectView):
