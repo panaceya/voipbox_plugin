@@ -43,13 +43,14 @@ plugin_menu = (
                 icon_class="mdi mdi-upload",
                 permissions=["phonebox_plugin.add_voicecircuit"],
             ),
+        ),
     ),
 )
 
 if plugin_settings.get("top_level_menu"):
     menu = PluginMenu(
         label="PhoneBox Plugin",
-        groups=(("", plugin_menu),),
+        groups=(("Voice", plugin_menu),),
         icon_class="mdi mdi-phone-dial",
     )
 else:
