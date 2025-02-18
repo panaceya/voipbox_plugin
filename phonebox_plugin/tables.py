@@ -3,13 +3,8 @@ from .models import Number, VoiceCircuit
 from django.conf import settings
 from packaging import version
 
-NETBOX_CURRENT_VERSION = version.parse(settings.VERSION)
-
-if NETBOX_CURRENT_VERSION >= version.parse("3.2"):
-    from netbox.tables import BaseTable, columns
-    ToggleColumn = columns.ToggleColumn
-else:
-    from utilities.tables import BaseTable, ToggleColumn
+from netbox.tables import BaseTable, columns
+ToggleColumn = columns.ToggleColumn
 
 
 class NumberTable(BaseTable):

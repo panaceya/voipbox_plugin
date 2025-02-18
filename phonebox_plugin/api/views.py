@@ -5,12 +5,8 @@ from . import serializers
 from django.conf import settings
 from packaging import version
 
-NETBOX_CURRENT_VERSION = version.parse(settings.VERSION)
 
-if NETBOX_CURRENT_VERSION >= version.parse("3.2"):
-    from netbox.api.viewsets import NetBoxModelViewSet as ModelViewSet
-else:
-    from netbox.api.views import ModelViewSet
+from netbox.api.viewsets import NetBoxModelViewSet as ModelViewSet
 
 
 class PhoneBoxPluginRootView(APIRootView):

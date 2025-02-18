@@ -9,18 +9,11 @@ from extras.models import Tag
 from .models import Number, VoiceCircuit
 from .choices import VoiceCircuitTypeChoices
 
-NETBOX_CURRENT_VERSION = version.parse(settings.VERSION)
-if NETBOX_CURRENT_VERSION < version.parse("3.5"):
-    from utilities.forms import (
-        DynamicModelMultipleChoiceField, DynamicModelChoiceField,
-        TagFilterField, BulkEditForm, CSVModelForm, CSVModelChoiceField
-    )
-else:
-    from utilities.forms import BulkEditForm, CSVModelForm
-    from utilities.forms.fields import (
-        DynamicModelMultipleChoiceField, DynamicModelChoiceField,
-        TagFilterField, CSVModelChoiceField
-    )
+from utilities.forms import BulkEditForm, CSVModelForm
+from utilities.forms.fields import (
+    DynamicModelMultipleChoiceField, DynamicModelChoiceField,
+    TagFilterField, CSVModelChoiceField
+)
 
 class AddRemoveTagsForm(forms.Form):
 
