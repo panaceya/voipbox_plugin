@@ -6,7 +6,7 @@ from django.conf import settings
 from packaging import version
 
 
-from netbox.api.viewsets import NetBoxModelViewSet as ModelViewSet
+from netbox.api.viewsets import NetBoxModelViewSet
 
 
 class PhoneBoxPluginRootView(APIRootView):
@@ -17,12 +17,12 @@ class PhoneBoxPluginRootView(APIRootView):
         return 'PhoneBox'
 
 
-class NumberViewSet(ModelViewSet):
+class NumberViewSet(NetBoxModelViewSet):
     queryset = Number.objects.prefetch_related('tenant', 'region', 'tags')
     serializer_class = serializers.NumberSerializer
     filterset_class = filters.NumberFilterSet
 
-class VoiceCircuitsViewSet(ModelViewSet):
+class VoiceCircuitsViewSet(NetBoxModelViewSet):
     queryset = VoiceCircuit.objects.prefetch_related('tenant', 'region', 'tags')
     serializer_class = serializers.VoiceCircuitSerializer
     filterset_class = filters.VoiceCircuitFilterSet
