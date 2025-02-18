@@ -8,6 +8,18 @@ A Telephone Number Management Plugin for [NetBox](https://github.com/netbox-comm
 
 I described some general considerations behind the plugin development and future plans in my [blog post](https://idebugall.github.io/phonebox-init/).
 
+
+## Configuration
+
+This plugin can be configured to use a top level netbox menu:
+```
+PLUGINS_CONFIG = {
+        "phonebox_plugin": {
+                "top_level_menu": True
+        }
+}
+```
+
 ### Preview
 
 ![](docs/media/preview_01.png)
