@@ -15,7 +15,7 @@ class NumberListView(generic.ObjectListView):
     filterset = filters.NumberFilterSet
     filterset_form = forms.NumberFilterForm
     table = tables.NumberTable
-    template_name = "phonebox_plugin/number_list_view.html"
+    #template_name = "phonebox_plugin/number_list_view.html"
     
 
 class NumberView(generic.ObjectView):
