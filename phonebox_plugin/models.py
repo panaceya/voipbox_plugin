@@ -8,6 +8,7 @@ from django.core.validators import RegexValidator
 from taggit.managers import TaggableManager
 from django.urls import reverse
 from .choices import VoiceCircuitTypeChoices, VOICE_CIRCUIT_ASSIGNMENT_MODELS
+from netbox.models import NetBoxModel
 
 number_validator = RegexValidator(
     r"^\+?[0-9A-D\#\*]*$",
@@ -15,7 +16,7 @@ number_validator = RegexValidator(
 )
 
 
-class Number(ChangeLoggedModel):
+class Number(NetBoxModel):
     """A Number represents a single telephone number of an arbitrary format.
     A Number can contain only valid DTMF characters and leading plus sign for E.164 support:
       - leading plus ("+") sign (optional)
@@ -68,17 +69,17 @@ class Number(ChangeLoggedModel):
 
     class Meta:
         unique_together = ("number", "tenant",)
-        
+
     def __str__(self):
         return str(self.number)
 
     def get_absolute_url(self):
-        return reverse("plugins:phonebox_plugin:number_view", kwargs={"pk": self.pk})
+        return reverse("plugins:phonebox_plugin:number", kwargs={"pk": self.pk})
 
 
 
 
-class VoiceCircuit(ChangeLoggedModel):
+class VoiceCircuit(NetBoxModel):
     """A Voice Circuit represents a single circuit of one of the following types:
     - SIP Trunk.
     - Digital Voice Circuit (BRI/PRI/etc).
@@ -159,4 +160,4 @@ class VoiceCircuit(ChangeLoggedModel):
         return str(self.name)
 
     def get_absolute_url(self):
-        return reverse("plugins:phonebox_plugin:voice_circuit_view", kwargs={"pk": self.pk})
+        return reverse("plugins:phonebox_plugin:voicecircuit", kwargs={"pk": self.pk})
