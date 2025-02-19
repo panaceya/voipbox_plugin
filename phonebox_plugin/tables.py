@@ -13,13 +13,14 @@ class NumberTable(BaseTable):
     number = tables.LinkColumn()
     tenant = tables.LinkColumn()
     region = tables.LinkColumn()
+    site = tables.LinkColumn()
     provider = tables.LinkColumn()
     forward_to = tables.LinkColumn()
     tags = columns.TagColumn()
 
     class Meta(BaseTable.Meta):
         model = Number
-        fields = ('pk', 'number', 'tenant', 'region', 'description', 'provider', 'forward_to', 'tags')
+        fields = ('pk', 'number', 'tenant', 'site', 'region', 'description', 'provider', 'forward_to', 'tags')
 
 
 class VoiceCircuitTable(BaseTable):

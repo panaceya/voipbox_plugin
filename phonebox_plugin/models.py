@@ -54,6 +54,13 @@ class Number(NetBoxModel):
         null=True,
         related_name="region_set"
     )
+    site = models.ForeignKey(
+        to="dcim.Site",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="site_set"
+    )
     forward_to = models.ForeignKey(
         to="self",
         on_delete=models.SET_NULL,
@@ -65,7 +72,7 @@ class Number(NetBoxModel):
 
     objects = RestrictedQuerySet.as_manager()
 
-    csv_headers = ['number', 'tenant', 'region', 'description', 'provider', 'forward_to']
+    csv_headers = ['number', 'tenant', 'site', 'region', 'description', 'provider', 'forward_to']
 
     class Meta:
         unique_together = ("number", "tenant",)

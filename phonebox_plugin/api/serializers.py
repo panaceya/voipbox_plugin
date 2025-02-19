@@ -4,7 +4,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 from ..models import Number, VoiceCircuit
 from tenancy.api.serializers import TenantSerializer
-from dcim.api.serializers import RegionSerializer, SiteSerializer
+from dcim.api.serializers import SiteSerializer, RegionSerializer, SiteSerializer
 from circuits.api.serializers import ProviderSerializer
 from netbox.api.fields import ContentTypeField
 from utilities.api import get_serializer_for_model
@@ -17,6 +17,7 @@ class NumberSerializer(NetBoxModelSerializer):
     label = serializers.CharField(source='number', read_only=True)
     tenant = TenantSerializer(required=True, allow_null=False, nested=True)
     region = RegionSerializer(required=False, allow_null=True, nested=True)
+    site = SiteSerializer(required=False, allow_null=True, nested=True)
     provider = ProviderSerializer(required=False, allow_null=True, nested=True)
     forward_to = serializers.PrimaryKeyRelatedField(queryset=Number.objects.all(), required=False, allow_null=True)
 
@@ -24,7 +25,7 @@ class NumberSerializer(NetBoxModelSerializer):
     class Meta:
         model = Number
         fields = (
-            "id", "url", "display", "label", "number", "tenant", "region", "forward_to", "description", "provider", "tags",
+            "id", "url", "display", "label", "number", "tenant", "site", "region", "forward_to", "description", "provider", "tags",
         )
         brief_fields = ("id", "url", "number", "display")
 

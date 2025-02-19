@@ -36,6 +36,12 @@ class NumberFilterSet(BaseFilterSet):
         to_field_name='id',
         label='Region (id)',
     )
+    site = django_filters.ModelMultipleChoiceFilter(
+        queryset=Site.objects.all(),
+        field_name='site__id',
+        to_field_name='id',
+        label='Site (id)',
+    )
     provider = django_filters.ModelMultipleChoiceFilter(
         queryset=Provider.objects.all(),
         field_name='provider__id',
