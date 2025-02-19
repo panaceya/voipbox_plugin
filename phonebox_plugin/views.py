@@ -29,7 +29,6 @@ class NumberView(generic.ObjectView):
 class NumberEditView(generic.ObjectEditView):
     queryset = Number.objects.all()
     form = forms.NumberEditForm
-    template_name = "phonebox_plugin/add_number_3.x.html"
 
 
 @register_model_view(Number, "bulk_edit", path="edit", detail=False)
@@ -43,7 +42,6 @@ class NumberBulkEditView(generic.BulkEditView):
 @register_model_view(Number, "delete")
 class NumberDeleteView(generic.ObjectDeleteView):
     queryset = Number.objects.all()
-    default_return_url = "plugins:phonebox_plugin:list_view"
 
 
 @register_model_view(Number, "bulk_delete", path="delete", detail=False)
@@ -51,7 +49,6 @@ class NumberBulkDeleteView(generic.BulkDeleteView):
     queryset = Number.objects.filter()
     filterset = filters.NumberFilterSet
     table = tables.NumberTable
-    default_return_url = "plugins:phonebox_plugin:list_view"
 
 
 @register_model_view(Number, "bulk_import", detail=False)
@@ -72,14 +69,13 @@ class VoiceCircuitListView(generic.ObjectListView):
 @register_model_view(VoiceCircuit)
 class VoiceCircuitView(generic.ObjectView):
     queryset = VoiceCircuit.objects.prefetch_related('tenant')
-    template_name = "phonebox_plugin/voice_circuit_3.x.html"
+    template_name = "phonebox_plugin/voicecircuit.html"
 
 @register_model_view(VoiceCircuit, "add", detail=False)
 @register_model_view(VoiceCircuit, "edit")
 class VoiceCircuitEditView(generic.ObjectEditView):
     queryset = VoiceCircuit.objects.all()
     form = forms.VoiceCircuitEditForm
-    template_name = "phonebox_plugin/add_voice_circuit_3.x.html"
 
 
 @register_model_view(VoiceCircuit, "bulk_edit", path="edit", detail=False)
@@ -93,7 +89,6 @@ class VoiceCircuitBulkEditView(generic.BulkEditView):
 @register_model_view(VoiceCircuit, "delete")
 class VoiceCircuitDeleteView(generic.ObjectDeleteView):
     queryset = VoiceCircuit.objects.all()
-    default_return_url = "plugins:phonebox_plugin:voice_circuit_list_view"
 
 
 @register_model_view(VoiceCircuit, "bulk_delete", path="delete", detail=False)
@@ -101,7 +96,6 @@ class VoiceCircuitBulkDeleteView(generic.BulkDeleteView):
     queryset = VoiceCircuit.objects.filter()
     filterset = filters.VoiceCircuitFilterSet
     table = tables.VoiceCircuitTable
-    default_return_url = "plugins:phonebox_plugin:voice_circuit_list_view"
 
 
 @register_model_view(VoiceCircuit, "bulk_import", detail=False)
