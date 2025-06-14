@@ -10,7 +10,7 @@ class PhoneBoxConfig(PluginConfig):
     author_email = 'iDebugAll@gmail.com'
     base_url = 'phonebox'
     min_version = "4.2.0"
-    max_version = "4.2.99"
+    max_version = "4.3.2"
     required_settings = []
     default_settings = {}
     caching_config = {
