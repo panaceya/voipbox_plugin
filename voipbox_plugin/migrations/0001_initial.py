@@ -2,14 +2,13 @@
 
 import django.core.validators
 import django.db.models.deletion
-import netbox.models.deletion
 import taggit.managers
-import utilities.json
 from django.db import migrations, models
+
+import utilities.json
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -27,25 +26,35 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False)),
                 ('created', models.DateTimeField(auto_now_add=True, null=True)),
                 ('last_updated', models.DateTimeField(auto_now=True, null=True)),
-                ('custom_field_data', models.JSONField(blank=True, default=dict, encoder=utilities.json.CustomFieldJSONEncoder)),
+                ('custom_field_data',
+                 models.JSONField(blank=True, default=dict, encoder=utilities.json.CustomFieldJSONEncoder)),
                 ('name', models.CharField(max_length=100, unique=True)),
                 ('description', models.TextField(blank=True)),
-                ('start', models.CharField(max_length=32, validators=[django.core.validators.RegexValidator('^\\+?[0-9A-D\\#\\*]*$', 'Numbers can only contain: leading +, digits 0-9; chars A, B, C, D; # and *')])),
-                ('end', models.CharField(max_length=32, validators=[django.core.validators.RegexValidator('^\\+?[0-9A-D\\#\\*]*$', 'Numbers can only contain: leading +, digits 0-9; chars A, B, C, D; # and *')])),
-                ('forward_to', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='forward_to_set', to='voipbox_plugin.pool')),
-                ('parent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='children', to='voipbox_plugin.pool')),
-                ('provider', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='provider_set', to='circuits.provider')),
-                ('region', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='region_set', to='dcim.region')),
-                ('site', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='site_set', to='dcim.site')),
+                ('start', models.CharField(max_length=32, validators=[
+                    django.core.validators.RegexValidator('^\\+?[0-9A-D\\#\\*]*$',
+                                                          'Numbers can only contain: leading +, digits 0-9; chars A, B, C, D; # and *')])),
+                ('end', models.CharField(max_length=32, validators=[
+                    django.core.validators.RegexValidator('^\\+?[0-9A-D\\#\\*]*$',
+                                                          'Numbers can only contain: leading +, digits 0-9; chars A, B, C, D; # and *')])),
+                ('forward_to', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                                 related_name='forward_to_set', to='voipbox_plugin.pool')),
+                ('parent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                             related_name='children', to='voipbox_plugin.pool')),
+                ('provider', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                               related_name='provider_set', to='circuits.provider')),
+                ('region', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                             related_name='region_set', to='dcim.region')),
+                ('site', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                           related_name='site_set', to='dcim.site')),
                 ('tags', taggit.managers.TaggableManager(through='extras.TaggedItem', to='extras.Tag')),
-                ('tenant', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='tenancy.tenant')),
+                ('tenant', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                             to='tenancy.tenant')),
             ],
             options={
                 'verbose_name': 'Number Resource Pool',
                 'verbose_name_plural': 'Number Resource Pools',
                 'ordering': ['start'],
             },
-            bases=(netbox.models.deletion.DeleteMixin, models.Model),
         ),
         migrations.CreateModel(
             name='VoiceCircuit',
@@ -53,7 +62,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False)),
                 ('created', models.DateTimeField(auto_now_add=True, null=True)),
                 ('last_updated', models.DateTimeField(auto_now=True, null=True)),
-                ('custom_field_data', models.JSONField(blank=True, default=dict, encoder=utilities.json.CustomFieldJSONEncoder)),
+                ('custom_field_data',
+                 models.JSONField(blank=True, default=dict, encoder=utilities.json.CustomFieldJSONEncoder)),
                 ('name', models.CharField(max_length=64)),
                 ('description', models.CharField(blank=True, max_length=200)),
                 ('voice_circuit_type', models.CharField(max_length=50)),
@@ -61,16 +71,23 @@ class Migration(migrations.Migration):
                 ('sip_source', models.CharField(blank=True, max_length=255)),
                 ('sip_target', models.CharField(blank=True, max_length=255)),
                 ('assigned_object_id', models.PositiveIntegerField(blank=True, null=True)),
-                ('assigned_object_type', models.ForeignKey(blank=True, limit_choices_to=models.Q(models.Q(models.Q(('app_label', 'dcim'), ('model', 'interface')), models.Q(('app_label', 'virtualization'), ('model', 'vminterface')), _connector='OR')), null=True, on_delete=django.db.models.deletion.PROTECT, related_name='+', to='contenttypes.contenttype')),
-                ('provider', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='vc_provider_set', to='circuits.provider')),
-                ('region', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='vc_region_set', to='dcim.region')),
-                ('site', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='vc_site_set', to='dcim.site')),
+                ('assigned_object_type', models.ForeignKey(blank=True, limit_choices_to=models.Q(
+                    models.Q(models.Q(('app_label', 'dcim'), ('model', 'interface')),
+                             models.Q(('app_label', 'virtualization'), ('model', 'vminterface')), _connector='OR')),
+                                                           null=True, on_delete=django.db.models.deletion.PROTECT,
+                                                           related_name='+', to='contenttypes.contenttype')),
+                ('provider', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                               related_name='vc_provider_set', to='circuits.provider')),
+                ('region', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                             related_name='vc_region_set', to='dcim.region')),
+                ('site', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                           related_name='vc_site_set', to='dcim.site')),
                 ('tags', taggit.managers.TaggableManager(through='extras.TaggedItem', to='extras.Tag')),
-                ('tenant', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='tenancy.tenant')),
+                ('tenant', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                             to='tenancy.tenant')),
             ],
             options={
                 'abstract': False,
             },
-            bases=(netbox.models.deletion.DeleteMixin, models.Model),
         ),
     ]
