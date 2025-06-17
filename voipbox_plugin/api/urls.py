@@ -3,10 +3,10 @@ from . import views
 
 
 router = DefaultRouter()
-router.APIRootView = views.PhoneBoxPluginRootView
+router.APIRootView = views.voipboxPluginRootView
 
-router.register(r'numbers', views.NumberViewSet)
+router.register(r'pool', views.PoolViewSet)
 router.register(r'voice-circuits', views.VoiceCircuitsViewSet)
 
-app_name = "phonebox_plugin-api"
+app_name = "voipbox_plugin-api"
 urlpatterns = router.urls

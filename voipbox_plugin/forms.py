@@ -1,19 +1,20 @@
 from django import forms
-from django.conf import settings
-from packaging import version
-from tenancy.models import Tenant
-from dcim.models import Region, Site, Device, Interface
-from virtualization.models import VirtualMachine, VMInterface
-from circuits.models import Provider
-from extras.models import Tag
-from .models import Number, VoiceCircuit
-from .choices import VoiceCircuitTypeChoices
+from django.utils.translation import gettext_lazy as _
 
+from circuits.models import Provider
+from dcim.models import Region, Site, Device, Interface
+from extras.models import Tag
+from tenancy.models import Tenant
 from utilities.forms import BulkEditForm, CSVModelForm
 from utilities.forms.fields import (
     DynamicModelMultipleChoiceField, DynamicModelChoiceField,
     TagFilterField, CSVModelChoiceField
 )
+from utilities.forms.rendering import FieldSet
+from virtualization.models import VirtualMachine, VMInterface
+from .choices import VoiceCircuitTypeChoices
+from .models import VoiceCircuit, Pool
+
 
 class AddRemoveTagsForm(forms.Form):
 
@@ -31,43 +32,34 @@ class AddRemoveTagsForm(forms.Form):
         )
 
 
-class NumberFilterForm(forms.Form):
-
-    model = Number
-    q = forms.CharField(
-        required=False,
-        label='Search'
-    )
-    tenant = DynamicModelMultipleChoiceField(
-        queryset=Tenant.objects.all(),
-        to_field_name='id',
-        required=False,
-        null_option='None',
-    )
-    region = DynamicModelMultipleChoiceField(
-        queryset=Region.objects.all(),
-        to_field_name='id',
-        required=False,
-        null_option='None',
-    )
-    site = DynamicModelMultipleChoiceField(
-        queryset=Site.objects.all(),
-        to_field_name='id',
-        required=False,
-        null_option='None',
-    )
-    provider = DynamicModelMultipleChoiceField(
-        queryset=Provider.objects.all(),
-        to_field_name='id',
-        required=False,
-        null_option='None',
+class PoolFilterForm(forms.Form):
+    model = Pool
+    fieldsets = (
+        FieldSet('q', 'filter_id', 'tag'),
+        FieldSet(
+            "start",
+            "end",
+            'status',
+            'is_pool',
+            name=_('Pool')
+        ),
+        FieldSet('tenant_group_id', 'tenant_id', name=_('Tenant')),
     )
     tags = TagFilterField(model)
 
 
-class NumberEditForm(forms.ModelForm):
-
-    number = forms.CharField(
+class PoolEditForm(forms.ModelForm):
+    name = forms.CharField(
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'autocomplete': 'off',
+                'title': 'Enter name pool'
+            }
+        )
+    )
+    start = forms.CharField(
         required=True,
         widget=forms.TextInput(
             attrs={
@@ -78,20 +70,34 @@ class NumberEditForm(forms.ModelForm):
             }
         )
     )
+    end = forms.CharField(
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'autocomplete': 'off',
+                'pattern': r'^\+?[0-9A-D\*\#]+$',
+                'title': 'Enter the Phone Number'
+            }
+        )
+    )
+    parent = DynamicModelChoiceField(queryset=Pool.objects.all(), required=False)
+    tenant = DynamicModelChoiceField(queryset=Tenant.objects.all(), required=False)
+
     tags = DynamicModelMultipleChoiceField(
         queryset=Tag.objects.all(),
         required=False
     )
-    
+
     class Meta:
-        model = Number
-        fields = ('number', 'tenant', 'site', 'region', 'description', 'provider', 'forward_to', 'tags')
+        model = Pool
+        fields = ('name', 'start', 'end', 'parent', 'tenant', 'site', 'region', 'description', 'provider', 'forward_to',
+                  'tags')
 
 
-class NumberBulkEditForm(AddRemoveTagsForm, BulkEditForm):
-
+class PoolBulkEditForm(AddRemoveTagsForm, BulkEditForm):
     pk = forms.ModelMultipleChoiceField(
-        queryset=Number.objects.all(),
+        queryset=Pool.objects.all(),
         widget=forms.MultipleHiddenInput()
     )
     tenant = DynamicModelChoiceField(
@@ -121,8 +127,8 @@ class NumberBulkEditForm(AddRemoveTagsForm, BulkEditForm):
     )
     # Implement plugin API to migrate to DynamicModelChoiceField
     forward_to = forms.ModelChoiceField(
-        queryset=Number.objects.all(),
-        to_field_name="number",
+        queryset=Pool.objects.all(),
+        to_field_name="pk",
         required=False
     )
     description = forms.CharField(
@@ -134,7 +140,7 @@ class NumberBulkEditForm(AddRemoveTagsForm, BulkEditForm):
         nullable_fields = ('region', 'site', 'provider', 'forward_to', 'description')
 
 
-class NumberCSVForm(CSVModelForm):
+class PoolCSVForm(CSVModelForm):
     tenant = CSVModelChoiceField(
         queryset=Tenant.objects.all(),
         required=True,
@@ -160,21 +166,20 @@ class NumberCSVForm(CSVModelForm):
         help_text='Assigned site'
     )
     forward_to = CSVModelChoiceField(
-        queryset=Number.objects.all(),
-        to_field_name="number",
+        queryset=Pool.objects.all(),
+        to_field_name="pk",
         required=False
     )
 
     class Meta:
-        model = Number
-        fields = Number.csv_headers
+        model = Pool
+        fields = Pool.csv_headers
         help_texts = {
             'forward_to': "Optional call forwarding Number",
         }
 
 
 class VoiceCircuitEditForm(forms.ModelForm):
-
     name = forms.CharField(
         required=True,
     )
@@ -217,7 +222,7 @@ class VoiceCircuitEditForm(forms.ModelForm):
     )
 
     class Media:
-        js = ('phonebox_plugin/js/edit_virtual_circuit.js',)
+        js = ('voipbox_plugin/js/edit_virtual_circuit.js',)
 
     class Meta:
         model = VoiceCircuit
@@ -253,7 +258,6 @@ class VoiceCircuitEditForm(forms.ModelForm):
 
 
 class VoiceCircuitFilterForm(forms.Form):
-
     model = VoiceCircuit
     q = forms.CharField(
         required=False,
@@ -287,7 +291,6 @@ class VoiceCircuitFilterForm(forms.Form):
 
 
 class VoiceCircuitBulkEditForm(AddRemoveTagsForm, BulkEditForm):
-
     pk = forms.ModelMultipleChoiceField(
         queryset=VoiceCircuit.objects.all(),
         widget=forms.MultipleHiddenInput()
@@ -320,7 +323,6 @@ class VoiceCircuitBulkEditForm(AddRemoveTagsForm, BulkEditForm):
 
 
 class VoiceCircuitCSVForm(CSVModelForm):
-
     tenant = CSVModelChoiceField(
         queryset=Tenant.objects.all(),
         required=True,

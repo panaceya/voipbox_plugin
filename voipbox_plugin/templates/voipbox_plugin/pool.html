@@ -1,0 +1,81 @@
+{% extends 'generic/object.html' %}
+{% load i18n %}
+
+{% block content %}
+    <div class="row">
+        <div class="col col-md-6">
+            <div class="card">
+                <h5 class="card-header">
+                    {% trans "Information" %}             </h5>
+                <table class="table table-hover panel-body attr-table">
+                    <tr>
+                        <td>Tenant</td>
+                        <td>
+                            {% if object.tenant %}
+                                {% if object.tenant.group %}
+                                    <a href="{{ object.tenant.group.get_absolute_url }}">{{ object.tenant.group }}</a> /
+                                {% endif %}
+                                <a href="{{ object.tenant.get_absolute_url }}">{{ object.tenant }}</a>
+                            {% else %}
+                                <span class="text-muted">None</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Region</td>
+                        <td>
+                            {% if object.region %}
+                                <a href="{{ object.region.get_absolute_url }}">{{ object.region }}</a>
+                            {% else %}
+                                <span class="text-muted">None</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Site</td>
+                        <td>
+                            {% if object.site %}
+                                <a href="{{ object.site.get_absolute_url }}">{{ object.site }}</a>
+                            {% else %}
+                                <span class="text-muted">None</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Provider</td>
+                        <td>
+                            {% if object.provider %}
+                                <a href="{{ object.provider.get_absolute_url }}">{{ object.provider }}</a>
+                            {% else %}
+                                <span class="text-muted">None</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Forward To</td>
+                        <td>
+                            {% if object.forward_to %}
+                                <a href="{{ object.forward_to.get_absolute_url }}">{{ object.forward_to }}</a>
+                            {% else %}
+                                <span class="text-muted">None</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Is pool</td>
+                        <td>{{ object.is_pool }}</td>
+                    </tr>
+                    <tr>
+                        <td>Description</td>
+                        <td>{{ object.description }}</td>
+                    </tr>
+                </table>
+            </div>
+            {% include 'inc/panels/custom_fields.html' %}
+        </div>
+        <div class="col col-md-6">
+            {% include 'inc/panels/tags.html' %}
+        </div>
+    </div>
+
+{% endblock content %}

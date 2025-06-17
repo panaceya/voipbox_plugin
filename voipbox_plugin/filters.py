@@ -1,28 +1,18 @@
 import django_filters
 from django.db.models import Q
+
 from circuits.models import Provider
 from dcim.models import Region, Site
-from tenancy.models import Tenant
-from .models import Number, VoiceCircuit
-from packaging import version
-from django.conf import settings
-
-
-from netbox.filtersets import BaseFilterSet
 from extras.filters import TagFilter
+from netbox.filtersets import BaseFilterSet
+from tenancy.models import Tenant
+from .models import VoiceCircuit, Pool
 
 
-class NumberFilterSet(BaseFilterSet):
-
+class PoolFilterSet(BaseFilterSet):
     q = django_filters.CharFilter(
         method='search',
         label='Search',
-    )
-    number = django_filters.ModelMultipleChoiceFilter(
-        field_name='number',
-        queryset=Number.objects.all(),
-        to_field_name='number',
-        label='number',
     )
     tenant = django_filters.ModelMultipleChoiceFilter(
         queryset=Tenant.objects.all(),
@@ -50,26 +40,25 @@ class NumberFilterSet(BaseFilterSet):
     )
     forward_to = django_filters.ModelMultipleChoiceFilter(
         field_name='forward_to',
-        queryset=Number.objects.all(),
-        to_field_name='number',
+        queryset=Pool.objects.all(),
+        to_field_name='pk',
         label='forward_to',
     )
     tags = TagFilter(to_field_name='slug', field_name='tags__slug')
 
     class Meta():
-        model = Number
-        fields = ('number', 'tags')
+        model = Pool
+        fields = ('end', 'start', 'parent', 'tags')
 
-    def search(self, queryset, number, value):
+    def search(self, queryset, start, value):
         if not value.strip():
             return queryset
         return queryset.filter(
-            Q(number__icontains=value)
+            Q(start__icontains=value) | Q(end__icontains=value)
         )
 
 
 class VoiceCircuitFilterSet(BaseFilterSet):
-
     q = django_filters.CharFilter(
         method='search',
         label='Search',
