@@ -3,8 +3,8 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["phonebox_plugin"]
-package-data = {"phonebox_plugin" = ["**/*", "templates/**"]}
+packages = ["voipbox_plugin"]
+package-data = {"voipbox_plugin" = ["**/*", "templates/**"]}
 
 
 [tool.black]
@@ -19,7 +19,7 @@ multi_line_output = 3
 max-line-length = 140
 
 [tool.pyright]
-include = ["phonebox_plugin"]
+include = ["voipbox_plugin"]
 exclude = [
     "**/node_modules",
     "**/__pycache__",
@@ -31,8 +31,8 @@ reportMissingTypeStubs = false
 line-length = 140
 
 [project]
-name = "phonebox-plugin"
-version = "0.0.11"
+name = "voipbox-plugin"
+version = "0.0.1"
 readme = "README.md"
 requires-python = ">=3.10.0"
 classifiers=[
@@ -42,11 +42,11 @@ classifiers=[
     'Programming Language :: Python :: 3.7',
     'Programming Language :: Python :: 3.8',
 ]
-keywords = ["netbox", "netbox-plugin"]
+keywords = ["netbox", "netbox-plugin", "voipbox"]
 license = {file = "LICENSE"}
 
 
 [project.urls]
-Documentation = "https://github.com/iDebugAll/phonebox_plugin/blob/main/README.md"
-Source = "https://github.com/iDebugAll/phonebox_plugin/"
-Tracker = "https://github.com/iDebugAll/phonebox_plugin/issues"
+Documentation = "https://github.com/panaceya/voipbox_plugin/blob/main/README.md"
+Source = "https://github.com/panaceya/voipbox_plugin/"
+Tracker = "https://github.com/panaceya/voipbox_plugin/issues"

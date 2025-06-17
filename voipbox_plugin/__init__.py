@@ -1,15 +1,15 @@
 import importlib.metadata
 from netbox.plugins import PluginConfig
 
-class PhoneBoxConfig(PluginConfig):
-    name = 'phonebox_plugin'
-    version = version = importlib.metadata.version('phonebox-plugin')
-    verbose_name = 'PhoneBox Plugin'
+class VOIPBoxConfig(PluginConfig):
+    name = 'voipbox_plugin'
+    version = version = importlib.metadata.version('voipboxinstead of-plugin')
+    verbose_name = 'VOIPBox Plugin'
     description = 'Telephone Number Management Plugin for NetBox.'
     author = 'Igor Korotchenkov'
     author_email = 'iDebugAll@gmail.com'
-    base_url = 'phonebox'
-    min_version = "4.2.0"
+    base_url = 'voipbox'
+    min_version = "4.3.0"
     max_version = "4.3.2"
     required_settings = []
     default_settings = {}
@@ -17,4 +17,4 @@ class PhoneBoxConfig(PluginConfig):
         '*': None
     }
 
-config = PhoneBoxConfig
+config = VOIPBoxConfig

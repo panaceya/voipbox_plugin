@@ -1,34 +1,38 @@
 from django.contrib.contenttypes.models import ContentType
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
-from rest_framework.validators import UniqueTogetherValidator
-from ..models import Number, VoiceCircuit
-from tenancy.api.serializers import TenantSerializer
-from dcim.api.serializers import SiteSerializer, RegionSerializer, SiteSerializer
+
 from circuits.api.serializers import ProviderSerializer
+from dcim.api.serializers import RegionSerializer, SiteSerializer
 from netbox.api.fields import ContentTypeField
+from netbox.api.serializers import NetBoxModelSerializer
+from tenancy.api.serializers import TenantSerializer
 from utilities.api import get_serializer_for_model
 from ..choices import VOICE_CIRCUIT_ASSIGNMENT_MODELS
-from netbox.api.serializers import NetBoxModelSerializer
+from ..models import VoiceCircuit, Pool
 
 
-class NumberSerializer(NetBoxModelSerializer):
-
-    label = serializers.CharField(source='number', read_only=True)
-    tenant = TenantSerializer(required=True, allow_null=False, nested=True)
+class PoolSerializer(NetBoxModelSerializer):
+    start = serializers.CharField(read_only=True)
+    end = serializers.CharField(read_only=True)
+    #parent = serializers.IntegerField(required=False, allow_null=True)
+    parent = serializers.PrimaryKeyRelatedField(
+        queryset=Pool.objects.all(),
+        required=False,
+        allow_null=True
+    )
+    tenant = TenantSerializer(required=False, allow_null=True, nested=True)
     region = RegionSerializer(required=False, allow_null=True, nested=True)
     site = SiteSerializer(required=False, allow_null=True, nested=True)
     provider = ProviderSerializer(required=False, allow_null=True, nested=True)
-    forward_to = serializers.PrimaryKeyRelatedField(queryset=Number.objects.all(), required=False, allow_null=True)
-
+    forward_to = serializers.PrimaryKeyRelatedField(queryset=Pool.objects.all(), required=False, allow_null=True)
 
     class Meta:
-        model = Number
+        model = Pool
         fields = (
-            "id", "url", "display", "label", "number", "tenant", "site", "region", "forward_to", "description", "provider", "tags",
+            "id", "url", "parent", "display", "start", "end", "tenant", "site", "region", "forward_to", "description", "provider", "tags",
         )
-        brief_fields = ("id", "url", "number", "display")
-
+        brief_fields = ("id", "url", "start", "end", "display")
 
 class VoiceCircuitSerializer(NetBoxModelSerializer):
 

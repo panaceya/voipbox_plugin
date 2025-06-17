@@ -1,45 +1,44 @@
-from django.db import models
+import logging
+
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from extras.models import TaggedItem
-from netbox.models import ChangeLoggedModel
-from utilities.querysets import RestrictedQuerySet
+from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
-from taggit.managers import TaggableManager
+from django.db import models
 from django.urls import reverse
-from .choices import VoiceCircuitTypeChoices, VOICE_CIRCUIT_ASSIGNMENT_MODELS
+from taggit.managers import TaggableManager
+
+from extras.models import TaggedItem
 from netbox.models import NetBoxModel
+from utilities.querysets import RestrictedQuerySet
+from .choices import VoiceCircuitTypeChoices, VOICE_CIRCUIT_ASSIGNMENT_MODELS
 
 number_validator = RegexValidator(
     r"^\+?[0-9A-D\#\*]*$",
     "Numbers can only contain: leading +, digits 0-9; chars A, B, C, D; # and *"
 )
 
+logger = logging.getLogger(__name__)
 
-class Number(NetBoxModel):
-    """A Number represents a single telephone number of an arbitrary format.
-    A Number can contain only valid DTMF characters and leading plus sign for E.164 support:
-      - leading plus ("+") sign (optional)
-      - digits 0-9
-      - characters A, B, C, D
-      - pound sign ("#")
-      - asterisk sign ("*")
-    Digit delimiters are now allowed. They will be implemented as a separate output formatter function.
-    Number values can be not unique.
-    Tenant is a mandatory option representing a number partition. Number and Tenant are globally unique.
-    A Number can optionally be assigned with Provider and Region relations.
-    A Number can contain an optional Description.
-    A Number can optionally be tagged with Tags.
-    """
 
-    number = models.CharField(max_length=32, validators=[number_validator])
+class Pool(NetBoxModel):
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(blank=True)
+    parent = models.ForeignKey(
+        to='self',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='children'
+    )
+    start = models.CharField(max_length=32, validators=[number_validator])
+    end = models.CharField(max_length=32, validators=[number_validator])
     tenant = models.ForeignKey(
         to='tenancy.Tenant',
         on_delete=models.CASCADE,
-        blank=False,
-        null=False
+        blank=True,
+        null=True
     )
-    description = models.CharField(max_length=200, blank=True)
     provider = models.ForeignKey(
         to="circuits.Provider",
         on_delete=models.SET_NULL,
@@ -68,22 +67,50 @@ class Number(NetBoxModel):
         null=True,
         related_name="forward_to_set"
     )
+
     tags = TaggableManager(through=TaggedItem)
 
     objects = RestrictedQuerySet.as_manager()
 
-    csv_headers = ['number', 'tenant', 'site', 'region', 'description', 'provider', 'forward_to']
+    csv_headers = ['start', 'end', 'tenant', 'site', 'region', 'description', 'provider', 'forward_to']
 
     class Meta:
-        unique_together = ("number", "tenant",)
+        ordering = ['start']
+        verbose_name = 'Number Resource Pool'
+        verbose_name_plural = 'Number Resource Pools'
 
     def __str__(self):
-        return str(self.number)
+        return f"{self.name} ({self.start}-{self.end})"
 
     def get_absolute_url(self):
-        return reverse("plugins:phonebox_plugin:number", kwargs={"pk": self.pk})
+        return reverse("plugins:voipbox_plugin:pool", kwargs={"pk": self.pk})
 
+    @property
+    def is_pool(self):
+        return self.start is not self.end
 
+    def clean(self):
+        if self.start > self.end:
+            raise ValidationError("Start must be less than or equal to end.")
+
+        if self.parent and not self.is_pool:
+            raise ValidationError("Cannot be assigned to parent is not a pool.")
+
+        overlapping = Pool.objects.filter(
+            parent=self.parent,
+            start__lte=self.end,
+            end__gte=self.start
+        ).exclude(pk=self.pk)
+
+        if overlapping.exists():
+            raise ValidationError("This pool overlaps with an existing sibling pool.")
+
+    def get_children(self, include_self=False):
+        """
+        Return all covered Pools in the hierarchy.
+        """
+        # TODO: use include_self
+        return Pool.objects.filter(parent=self.id)
 
 
 class VoiceCircuit(NetBoxModel):
@@ -167,4 +194,4 @@ class VoiceCircuit(NetBoxModel):
         return str(self.name)
 
     def get_absolute_url(self):
-        return reverse("plugins:phonebox_plugin:voicecircuit", kwargs={"pk": self.pk})
+        return reverse("plugins:voipbox_plugin:voicecircuit", kwargs={"pk": self.pk})

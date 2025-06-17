@@ -1,30 +1,16 @@
-# PhoneBox Plugin
+# voipbox Plugin
+> this plugins forked and compatible with phonebox_plugin 
 
 A Telephone Number Management Plugin for [NetBox](https://github.com/netbox-community/netbox) and more.
 
 ## Compatibility
 
-| NetBox Version      | Plugin Version |
-|:-------------------:|:--------------:|
-|      4.2.x          |     0.0.11     |
-
->The plugin versions 0.0.1b1-0.0.1b4 support NetBox 2.10.x versions.
->
->Latest plugin version 0.0.1b5 supports NetBox 2.11.0+ versions
-
-I described some general considerations behind the plugin development and future plans in my [blog post](https://idebugall.github.io/phonebox-init/).
-
+| NetBox Version | Plugin Version |
+|:--------------:|:--------------:|
+|  4.3.0-4.3.2   |     0.0.1      |
 
 ## Configuration
 
-This plugin can be configured to use a top level netbox menu:
-```
-PLUGINS_CONFIG = {
-        "phonebox_plugin": {
-                "top_level_menu": True
-        }
-}
-```
 
 ### Preview
 
@@ -33,10 +19,10 @@ PLUGINS_CONFIG = {
 
 # Supported Features and Models
 
-### Numbers
-
-The plugin currently implements a Number abstraction representing a single telephone number of an arbitrary format.<br/>
-A Number can consist of valid DTMF characters and leading plus sign for E.164 support:
+### Pool 
+ 
+The plugin currently implements a Pool numbers abstraction representing a single telephone number of an arbitrary format.<br/>
+A Pool numbers can consist of valid DTMF characters and leading plus sign for E.164 support:
   - leading plus ("+") sign (optional)
   - digits 0-9
   - characters A, B, C, D
@@ -65,13 +51,11 @@ A Voice Circuit must be assigned to an interface of a Device or Virtual Machine.
 
 ### Plugin API
 
-The plugin introduces a NetBox REST API extension `/api/plugins/phonebox/`.<br/>
-It currently supports all create, read, update, and delete operations for Numbers via `/api/plugins/phonebox/numbers/`.<br/>
+The plugin introduces a NetBox REST API extension `/api/plugins/voipbox/`.<br/>
+It currently supports all create, read, update, and delete operations for Numbers via `/api/plugins/voipbox/numbers/`.<br/>
 The API is compatible with [pynetbox](https://github.com/digitalocean/pynetbox):
 ```
->>> nb.plugins.phonebox.numbers.get(7)
-2000
->>> 
+>>> nb.plugins.voipbox.pool.get(1)
 ```
 
 # Installation
@@ -83,30 +67,30 @@ General installation steps and considerations follow the [official guidelines](h
 Assuming you use a Virtual Environment for Netbox:
 ```
 $ source /opt/netbox/venv/bin/activate
-(venv) $ pip3 install phonebox-plugin
+(venv) $ pip3 install voipbox-plugin
 ```
 
 ### Package Installation from Source Code
-The source code is available on [GitHub](https://github.com/iDebugAll/phonebox_plugin).<br/>
+The source code is available on [GitHub](https://github.com/iDebugAll/voipbox_plugin).<br/>
 Download and install the package. Assuming you use a Virtual Environment for Netbox:
 ```
-$ git clone https://github.com/iDebugAll/phonebox_plugin
-$ cd phonebox_plugin
+$ git clone https://github.com/iDebugAll/voipbox_plugin
+$ cd voipbox_plugin
 $ source /opt/netbox/venv/bin/activate
 (venv) $ pip3 install .
 ```
 
-To ensure NextBox UI plugin is automatically re-installed during future upgrades, create a file named `local_requirements.txt` (if not already existing) in the NetBox root directory (alongside `requirements.txt`) and list the `phonebox_plugin` package:
+To ensure NextBox UI plugin is automatically re-installed during future upgrades, create a file named `local_requirements.txt` (if not already existing) in the NetBox root directory (alongside `requirements.txt`) and list the `voipbox_plugin` package:
 
 ```no-highlight
-# echo phonebox_plugin >> local_requirements.txt
+# echo voipbox_plugin >> local_requirements.txt
 ```
 
 ### Enable the Plugin
 In a global Netbox **configuration.py** configuration file, update or add PLUGINS parameter:
 ```python
 PLUGINS = [
-    'phonebox_plugin',
+    'voipbox_plugin',
 ]
 ```
 
@@ -135,8 +119,8 @@ The Plugin may be installed in a Netbox Docker deployment.
 The package contains a Dockerfile for [Netbox-Community Docker](https://github.com/netbox-community/netbox-docker) extension. Latest-LDAP version is used by default as a source.<br/>
 Download the Plugin and build from source:
 ```
-$ git clone https://github.com/iDebugAll/phonebox_plugin
-$ cd phonebox_plugin
+$ git clone https://github.com/iDebugAll/voipbox_plugin
+$ cd voipbox_plugin
 $ docker build -t netbox-custom .
 ```
 Update a netbox image name in **docker-compose.yml** in a Netbox Community Docker project root:
