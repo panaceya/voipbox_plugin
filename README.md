@@ -7,7 +7,8 @@ A Telephone Number Management Plugin for [NetBox](https://github.com/netbox-comm
 
 | NetBox Version | Plugin Version |
 |:--------------:|:--------------:|
-|  4.3.0-4.3.2   |     0.0.1      |
+|  4.3.0-4.3.2   |     0.0.3      |
+|  4.3.0-4.3.3   |     0.0.4      |
 
 ## Configuration
 
