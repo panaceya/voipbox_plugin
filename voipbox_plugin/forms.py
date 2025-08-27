@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from circuits.models import Provider
 from dcim.models import Region, Site, Device, Interface
 from extras.models import Tag
+from netbox.forms import NetBoxModelForm
 from tenancy.models import Tenant
 from utilities.forms import BulkEditForm, CSVModelForm
 from utilities.forms.fields import (
@@ -48,7 +49,7 @@ class PoolFilterForm(forms.Form):
     tags = TagFilterField(model)
 
 
-class PoolEditForm(forms.ModelForm):
+class PoolEditForm(NetBoxModelForm):
     name = forms.CharField(
         required=True,
         widget=forms.TextInput(
@@ -179,7 +180,7 @@ class PoolCSVForm(CSVModelForm):
         }
 
 
-class VoiceCircuitEditForm(forms.ModelForm):
+class VoiceCircuitEditForm(NetBoxModelForm):
     name = forms.CharField(
         required=True,
     )
