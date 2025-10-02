@@ -10,7 +10,7 @@ class VOIPBoxConfig(PluginConfig):
     author_email = 'iDebugAll@gmail.com'
     base_url = 'voipbox'
     min_version = "4.3.0"
-    max_version = "4.3.3"
+    max_version = "4.3.7"
     required_settings = []
     default_settings = {}
     caching_config = {
