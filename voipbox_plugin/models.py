@@ -112,6 +112,16 @@ class Pool(NetBoxModel):
         # TODO: use include_self
         return Pool.objects.filter(parent=self.id)
 
+    def get_parent_chain(self):
+        """
+        Return the parent hierarchy chain for this pool
+        """
+        parents = []
+        current = self.parent
+        while current:
+            parents.insert(0,current)
+            current = current.parent
+        return parents
 
 class VoiceCircuit(NetBoxModel):
     """A Voice Circuit represents a single circuit of one of the following types:
