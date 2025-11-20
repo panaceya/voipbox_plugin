@@ -71,11 +71,23 @@
                     </tr>
                 </table>
             </div>
-            {% include 'inc/panels/custom_fields.html' %}
         </div>
         <div class="col col-md-6">
             {% include 'inc/panels/tags.html' %}
+            {% include 'inc/panels/custom_fields.html' %}
+            {% include 'inc/panels/comments.html' %}
         </div>
     </div>
-
+    {% if object.is_pool %}
+    <div class="row mb-3">
+        <div class="col col-md-12">
+            <div class="card">
+                <h2 class="card-header">
+                {% trans "Child Resources" %}
+                </h2>
+            {% htmx_table 'plugins:voipbox_plugin:pool_list' parent=object.pk %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
 {% endblock content %}
