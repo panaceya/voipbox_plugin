@@ -1,3 +1,5 @@
+_Note: Fork of panaceya/voipbox_plugin, in turn forked from iDebugAll/phonebox_plugin_
+
 # voipbox Plugin
 > this plugins forked and compatible with phonebox_plugin 
 
