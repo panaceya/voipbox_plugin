@@ -87,7 +87,7 @@ class Pool(NetBoxModel):
 
     @property
     def is_pool(self):
-        return self.start is not self.end
+        return self.start != self.end
 
     def clean(self):
         if self.start > self.end:
