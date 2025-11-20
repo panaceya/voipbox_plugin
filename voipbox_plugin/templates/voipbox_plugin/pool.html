@@ -1,6 +1,13 @@
 {% extends 'generic/object.html' %}
 {% load i18n %}
 
+{% block breadcrumbs %}
+  {{ block.super }}
+    {% for pool in object.get_parent_chain %}
+      <li class="breadcrumb-item"><a href="{{ pool.get_absolute_url }}">{{ pool.name }}</a></li>
+    {% endfor %}
+{% endblock %}
+
 {% block content %}
     <div class="row">
         <div class="col col-md-6">
