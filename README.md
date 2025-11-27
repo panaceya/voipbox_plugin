@@ -11,6 +11,7 @@ A Telephone Number Management Plugin for [NetBox](https://github.com/netbox-comm
 |  4.3.0-4.3.3   |     0.0.4      |
 |  4.3.0-4.3.7   |     0.0.5      |
 |  4.3.0-4.5.0   |     0.0.6      |
+|  4.3.0-4.5.0   |     0.0.7      |
 
 ## Configuration
 
