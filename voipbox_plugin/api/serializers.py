@@ -13,8 +13,8 @@ from ..models import VoiceCircuit, Pool
 
 
 class PoolSerializer(NetBoxModelSerializer):
-    start = serializers.CharField(read_only=True)
-    end = serializers.CharField(read_only=True)
+    start = serializers.CharField()
+    end = serializers.CharField()
     #parent = serializers.IntegerField(required=False, allow_null=True)
     parent = serializers.PrimaryKeyRelatedField(
         queryset=Pool.objects.all(),
@@ -30,7 +30,7 @@ class PoolSerializer(NetBoxModelSerializer):
     class Meta:
         model = Pool
         fields = (
-            "id", "url", "parent", "display", "start", "end", "tenant", "site", "region", "forward_to", "description", "provider", "tags",
+            "id", "name", "url", "parent", "display", "start", "end", "tenant", "site", "region", "forward_to", "description", "provider", "tags",
         )
         brief_fields = ("id", "url", "start", "end", "display")
 
