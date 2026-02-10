@@ -25,7 +25,7 @@ class PoolView(generic.ObjectView):
     tab = ViewTab(
         label=_('Child pools'),
         badge=lambda x: x.get_children().count(),
-        permission='voipbox_plugin:view_pool',
+        permission='voipbox_plugin.view_pool',
         weight=600
     )
 
