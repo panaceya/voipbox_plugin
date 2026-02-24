@@ -76,10 +76,10 @@ $ source /opt/netbox/venv/bin/activate
 ```
 
 ### Package Installation from Source Code
-The source code is available on [GitHub](https://github.com/iDebugAll/voipbox_plugin).<br/>
+The source code is available on [GitHub](https://github.com/panaceya/voipbox_plugin).<br/>
 Download and install the package. Assuming you use a Virtual Environment for Netbox:
 ```
-$ git clone https://github.com/iDebugAll/voipbox_plugin
+$ git clone https://github.com/panaceya/voipbox_plugin.git
 $ cd voipbox_plugin
 $ source /opt/netbox/venv/bin/activate
 (venv) $ pip3 install .
