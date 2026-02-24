@@ -32,15 +32,14 @@ line-length = 140
 
 [project]
 name = "voipbox-plugin"
-version = "0.0.8"
+version = "0.0.9"
 readme = "README.md"
 requires-python = ">=3.10.0"
 classifiers=[
     'Development Status :: 4 - Beta',
     'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.6',
-    'Programming Language :: Python :: 3.7',
-    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.12',
 ]
 keywords = ["netbox", "netbox-plugin", "voipbox"]
 license = {file = "LICENSE"}
