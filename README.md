@@ -5,14 +5,15 @@ A Telephone Number Management Plugin for [NetBox](https://github.com/netbox-comm
 
 ## Compatibility
 
-| NetBox Version | Plugin Version |
-|:--------------:|:--------------:|
-|  4.3.0-4.3.2   |     0.0.3      |
-|  4.3.0-4.3.3   |     0.0.4      |
-|  4.3.0-4.3.7   |     0.0.5      |
-|  4.3.0-4.5.0   |     0.0.6      |
-|  4.3.0-4.5.0   |     0.0.7      |
-|  4.4.0-4.6.0   |     0.0.8      |
+| NetBox Version | VoipBox Plugin Version |
+|:--------------:|:----------------------:|
+|  4.3.0-4.3.2   |     0.0.3              |
+|  4.3.0-4.3.3   |     0.0.4              |
+|  4.3.0-4.3.7   |     0.0.5              |
+|  4.3.0-4.5.0   |     0.0.6              |
+|  4.3.0-4.5.0   |     0.0.7              |
+|  4.4.X-4.5.X   |     0.0.8, 0.0.9       |
+
 
 ## Configuration
 
@@ -76,10 +77,10 @@ $ source /opt/netbox/venv/bin/activate
 ```
 
 ### Package Installation from Source Code
-The source code is available on [GitHub](https://github.com/iDebugAll/voipbox_plugin).<br/>
+The source code is available on [GitHub](https://github.com/panaceya/voipbox_plugin).<br/>
 Download and install the package. Assuming you use a Virtual Environment for Netbox:
 ```
-$ git clone https://github.com/iDebugAll/voipbox_plugin
+$ git clone https://github.com/panaceya/voipbox_plugin.git
 $ cd voipbox_plugin
 $ source /opt/netbox/venv/bin/activate
 (venv) $ pip3 install .
