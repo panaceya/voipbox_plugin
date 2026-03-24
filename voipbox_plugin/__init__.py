@@ -16,5 +16,6 @@ class VOIPBoxConfig(PluginConfig):
     caching_config = {
         '*': None
     }
+    template_extensions = 'template_content.template_extensions'
 
 config = VOIPBoxConfig

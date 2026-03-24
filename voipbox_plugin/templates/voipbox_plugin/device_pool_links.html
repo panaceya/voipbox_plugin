@@ -1,0 +1,69 @@
+<div class="card">
+    <h2 class="card-header">Voice Pools</h2>
+    <table class="table table-hover attr-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Parent</th>
+                <th>Tenant</th>
+                <th>Description</th>
+                <th>Provider</th>
+                <th>Forwards To</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pool in pools %}
+            <tr>
+                <th scope="row">
+                    <a href="{{ pool.get_absolute_url }}">{{ pool.name }}</a>
+                </th>
+                <td>
+                    {% if pool.start %}
+                    <a href="{{ pool.get_absolute_url }}">{{ pool.start }}</a>
+                    {% else %}
+                    <span class="text-muted">None</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if pool.end %}
+                    <a href="{{ pool.get_absolute_url }}">{{ pool.end }}</a>
+                    {% else %}
+                    <span class="text-muted">None</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if pool.parent %}
+                    <a href="{{ pool.parent.get_absolute_url }}">{{ pool.parent }}</a>
+                    {% else %}
+                    <span class="text-muted">None</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if pool.tenant %}
+                    <a href="{{ pool.tenant.get_absolute_url }}">{{ pool.tenant }}</a>
+                    {% else %}
+                    <span class="text-muted">None</span>
+                    {% endif %}
+                </td>
+                <td>{{ pool.description|default:"-" }}</td>
+                <td>
+                    {% if pool.provider %}
+                    <a href="{{ pool.provider.get_absolute_url }}">{{ pool.provider }}</a>
+                    {% else %}
+                    <span class="text-muted">None</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if pool.forward_to %}
+                    <a href="{{ pool.forward_to.get_absolute_url }}">{{ pool.forward_to }}</a>
+                    {% else %}
+                    <span class="text-muted">None</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

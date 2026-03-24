@@ -60,6 +60,13 @@ class Pool(NetBoxModel):
         null=True,
         related_name="site_set"
     )
+    device = models.ForeignKey(
+        to="dcim.Device",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="voipbox_pools"
+    )
     forward_to = models.ForeignKey(
         to="self",
         on_delete=models.SET_NULL,
@@ -72,7 +79,7 @@ class Pool(NetBoxModel):
 
     objects = RestrictedQuerySet.as_manager()
 
-    csv_headers = ['start', 'end', 'tenant', 'site', 'region', 'description', 'provider', 'forward_to']
+    csv_headers = ['start', 'end', 'tenant', 'site', 'region', 'device', 'description', 'provider', 'forward_to']
 
     class Meta:
         ordering = ['start']
