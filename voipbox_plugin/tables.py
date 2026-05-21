@@ -16,14 +16,27 @@ class PoolTable(BaseTable):
     region = tables.LinkColumn()
 
     site = tables.LinkColumn()
+    device = tables.LinkColumn()
     provider = tables.LinkColumn()
     forward_to = tables.LinkColumn()
     tags = columns.TagColumn()
 
     class Meta(BaseTable.Meta):
         model = Pool
-        fields = ('pk', 'name', 'start', 'end', 'parent', 'tenant', 'site', 'region', 'description', 'provider',
+        fields = ('pk', 'name', 'start', 'end', 'parent', 'tenant', 'site', 'region', 'device', 'description', 'provider',
                   'forward_to', 'tags')
+
+
+class DevicePoolTable(BaseTable):
+    number = tables.Column(accessor='start', linkify=True, verbose_name='Number')
+    site = tables.LinkColumn()
+    region = tables.LinkColumn()
+    provider = tables.LinkColumn()
+    forward_to = tables.LinkColumn()
+
+    class Meta(BaseTable.Meta):
+        model = Pool
+        fields = ('number', 'site', 'region', 'description', 'provider', 'forward_to')
 
 
 class VoiceCircuitTable(BaseTable):

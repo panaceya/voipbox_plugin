@@ -2,7 +2,7 @@ import django_filters
 from django.db.models import Q
 
 from circuits.models import Provider
-from dcim.models import Region, Site
+from dcim.models import Region, Site, Device
 from extras.filters import TagFilter
 from netbox.filtersets import BaseFilterSet
 from tenancy.models import Tenant
@@ -32,6 +32,12 @@ class PoolFilterSet(BaseFilterSet):
         to_field_name='id',
         label='Site (id)',
     )
+    device = django_filters.ModelMultipleChoiceFilter(
+        queryset=Device.objects.all(),
+        field_name='device__id',
+        to_field_name='id',
+        label='Device (id)',
+    )
     provider = django_filters.ModelMultipleChoiceFilter(
         queryset=Provider.objects.all(),
         field_name='provider__id',
@@ -48,7 +54,7 @@ class PoolFilterSet(BaseFilterSet):
 
     class Meta():
         model = Pool
-        fields = ('end', 'start', 'parent', 'tags')
+        fields = ('end', 'start', 'parent', 'device', 'tags')
 
     def search(self, queryset, start, value):
         if not value.strip():

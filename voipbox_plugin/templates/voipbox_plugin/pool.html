@@ -49,6 +49,16 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>Device</td>
+                        <td>
+                            {% if object.device %}
+                                <a href="{{ object.device.get_absolute_url }}">{{ object.device }}</a>
+                            {% else %}
+                                <span class="text-muted">None</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Provider</td>
                         <td>
                             {% if object.provider %}

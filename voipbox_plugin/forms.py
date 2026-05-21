@@ -84,6 +84,7 @@ class PoolEditForm(NetBoxModelForm):
     )
     parent = DynamicModelChoiceField(queryset=Pool.objects.all(), required=False)
     tenant = DynamicModelChoiceField(queryset=Tenant.objects.all(), required=False)
+    device = DynamicModelChoiceField(queryset=Device.objects.all(), required=False)
 
     tags = DynamicModelMultipleChoiceField(
         queryset=Tag.objects.all(),
@@ -92,7 +93,7 @@ class PoolEditForm(NetBoxModelForm):
 
     class Meta:
         model = Pool
-        fields = ('name', 'start', 'end', 'parent', 'tenant', 'site', 'region', 'description', 'provider', 'forward_to',
+        fields = ('name', 'start', 'end', 'parent', 'tenant', 'site', 'region', 'device', 'description', 'provider', 'forward_to',
                   'tags')
 
 
@@ -119,6 +120,12 @@ class PoolBulkEditForm(AddRemoveTagsForm, BulkEditForm):
         required=False,
         null_option='None',
     )
+    device = DynamicModelChoiceField(
+        queryset=Device.objects.all(),
+        to_field_name='id',
+        required=False,
+        null_option='None',
+    )
 
     provider = DynamicModelChoiceField(
         queryset=Provider.objects.all(),
@@ -138,7 +145,7 @@ class PoolBulkEditForm(AddRemoveTagsForm, BulkEditForm):
     )
 
     class Meta:
-        nullable_fields = ('region', 'site', 'provider', 'forward_to', 'description')
+        nullable_fields = ('region', 'site', 'device', 'provider', 'forward_to', 'description')
 
 
 class PoolCSVForm(CSVModelForm):
@@ -165,6 +172,12 @@ class PoolCSVForm(CSVModelForm):
         required=False,
         to_field_name='name',
         help_text='Assigned site'
+    )
+    device = CSVModelChoiceField(
+        queryset=Device.objects.all(),
+        required=False,
+        to_field_name='name',
+        help_text='Assigned device'
     )
     forward_to = CSVModelChoiceField(
         queryset=Pool.objects.all(),

@@ -1,4 +1,5 @@
 from django.utils.translation import gettext_lazy as _
+from dcim.models import Device
 from netbox.views import generic
 from utilities.views import ViewTab, register_model_view
 
@@ -62,6 +63,23 @@ class PoolBulkImportView(generic.BulkImportView):
     queryset = Pool.objects.all()
     model_form = forms.PoolCSVForm
     table = tables.PoolTable
+
+
+@register_model_view(Device, 'voipbox-pools', path='voipbox-pools')
+class DevicePoolsView(generic.ObjectChildrenView):
+    queryset = Device.objects.all()
+    child_model = Pool
+    table = tables.DevicePoolTable
+    tab = ViewTab(
+        label=_('Voice Pools'),
+        badge=lambda obj: Pool.objects.filter(device=obj).count(),
+        permission='voipbox_plugin.view_pool',
+        weight=2250,
+        hide_if_empty=True,
+    )
+
+    def get_children(self, request, parent):
+        return self.child_model.objects.restrict(request.user, 'view').filter(device=parent)
 
 
 @register_model_view(VoiceCircuit, "list", path="", detail=False)

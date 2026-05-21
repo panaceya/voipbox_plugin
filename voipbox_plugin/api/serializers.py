@@ -3,7 +3,7 @@ from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from circuits.api.serializers import ProviderSerializer
-from dcim.api.serializers import RegionSerializer, SiteSerializer
+from dcim.api.serializers import DeviceSerializer, RegionSerializer, SiteSerializer
 from netbox.api.fields import ContentTypeField
 from netbox.api.serializers import NetBoxModelSerializer
 from tenancy.api.serializers import TenantSerializer
@@ -24,13 +24,14 @@ class PoolSerializer(NetBoxModelSerializer):
     tenant = TenantSerializer(required=False, allow_null=True, nested=True)
     region = RegionSerializer(required=False, allow_null=True, nested=True)
     site = SiteSerializer(required=False, allow_null=True, nested=True)
+    device = DeviceSerializer(required=False, allow_null=True, nested=True)
     provider = ProviderSerializer(required=False, allow_null=True, nested=True)
     forward_to = serializers.PrimaryKeyRelatedField(queryset=Pool.objects.all(), required=False, allow_null=True)
 
     class Meta:
         model = Pool
         fields = (
-            "id", "name", "url", "parent", "display", "start", "end", "tenant", "site", "region", "forward_to", "description", "provider", "tags",
+            "id", "name", "url", "parent", "display", "start", "end", "tenant", "site", "region", "device", "forward_to", "description", "provider", "tags",
         )
         brief_fields = ("id", "url", "start", "end", "display")
 
