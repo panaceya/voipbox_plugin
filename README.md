@@ -13,6 +13,7 @@ A Telephone Number Management Plugin for [NetBox](https://github.com/netbox-comm
 |  4.3.0-4.5.0   |     0.0.6              |
 |  4.3.0-4.5.0   |     0.0.7              |
 |  4.4.X-4.5.X   |     0.0.8, 0.0.9       |
+|  4.5.X-4.6.X   |     0.0.10             |
 
 
 ## Configuration
